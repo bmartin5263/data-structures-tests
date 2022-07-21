@@ -7,6 +7,7 @@ public interface SinglyLinkedList<T extends Comparable<T>> extends Iterable<T> {
     interface Node<T> {
         T getData();
         Node<T> getNext();
+        void setNext(Node<T> node);
     }
 
     /**
@@ -84,7 +85,7 @@ public interface SinglyLinkedList<T extends Comparable<T>> extends Iterable<T> {
             ++count;
             current = current.getNext();
         }
-        T[] arr = (T[]) new Object[count];
+        T[] arr = (T[]) new Comparable[count];
 
         count = 0;
         current = head();

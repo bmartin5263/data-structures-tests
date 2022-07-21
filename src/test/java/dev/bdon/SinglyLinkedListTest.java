@@ -11,6 +11,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class SinglyLinkedListTest {
 
     private <T extends Comparable<T>> SinglyLinkedList<T> createList() {
+        // TODO - replace with your implementation
         return null;
     }
 
@@ -152,11 +153,12 @@ class SinglyLinkedListTest {
         list.pushBack("4");
         list.pushBack("5");
 
-        list.remove("1");
-        list.remove("4");
-        list.remove("5");
-        list.remove("3");
-        list.remove("2");
+        assert list.remove("1");
+        assert !list.remove("1");
+        assert list.remove("4");
+        assert list.remove("5");
+        assert list.remove("3");
+        assert list.remove("2");
 
         assert list.isEmpty();
         assert list.size() == 0;
