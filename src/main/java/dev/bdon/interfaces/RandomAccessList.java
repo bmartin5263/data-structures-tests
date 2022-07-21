@@ -2,13 +2,7 @@ package dev.bdon.interfaces;
 
 import java.util.Iterator;
 
-public interface SinglyLinkedList<T extends Comparable<T>> extends Iterable<T> {
-
-    interface Node<T> {
-        T getData();
-        Node<T> getNext();
-        void setNext(Node<T> node);
-    }
+public interface RandomAccessList<T extends Comparable<T>> {
 
     /**
      * Adds an item to front of the list where list[0] is considered the front
@@ -21,16 +15,19 @@ public interface SinglyLinkedList<T extends Comparable<T>> extends Iterable<T> {
     void pushBack(T data);
 
     /**
-     * Inserts an item to the specified position in the list.
+     * Inserts an item to the specified position in the list, shifting all elements over to accommodate the
+     * new item
      *
      * @throws IndexOutOfBoundsException if pos is < 0 OR pos > size() + 1
      */
     void insert(int pos, T data);
 
     /**
-     * Returns the node of the front of the list
+     * Sets the value at specified position to the given value in the list. No new items are added
+     *
+     * @throws IndexOutOfBoundsException if pos is < 0 OR pos >= size()
      */
-    Node<T> head();
+    void set(int pos, T data);
 
     /**
      * Returns the number of items in the list
@@ -61,40 +58,25 @@ public interface SinglyLinkedList<T extends Comparable<T>> extends Iterable<T> {
     boolean remove(T o);
 
     /**
+     * Removes the item at the given index from the list.
+     *
+     * @throws IndexOutOfBoundsException if pos is < 0 OR pos >= size()
+     */
+    boolean removeAtIndex(int index);
+
+    /**
      * Deletes all items from the list
      */
     void clear();
 
     /**
-     * Returns the maximum item in the list as defined by its compareTo() method
+     * Sorts the list in-place
      */
-    T max();
+    void sort();
 
     /**
-     * Returns the minimum item in the list as defined by its compareTo() method
+     * Returns a new list based on the current list in sorted order
      */
-    T min();
+    RandomAccessList<T> sorted();
 
-    /**
-     * Walks the list to return a fixed-sized array of all the items in the list.
-     */
-    @SuppressWarnings("unchecked")
-    default T[] toArray() {
-        int count = 0;
-        Node<T> current = head();
-        while (current != null) {
-            ++count;
-            current = current.getNext();
-        }
-        T[] arr = (T[]) new Comparable[count];
-
-        count = 0;
-        current = head();
-        while (current != null) {
-            arr[count++] = current.getData();
-            current = current.getNext();
-        }
-
-        return arr;
-    }
 }
