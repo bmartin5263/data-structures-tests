@@ -2,6 +2,7 @@ package dev.bdon.list;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 public interface List<T> extends Iterable<T> {
@@ -22,6 +23,34 @@ public interface List<T> extends Iterable<T> {
      * Adds an item to back of the list where list[size() - 1] is considered the back
      */
     void pushBack(T data);
+
+    /**
+     * Remove the item at the front of the list where list[0] is considered the front
+     *
+     * @throws NoSuchElementException if size() == 0
+     */
+    T popFront();
+
+    /**
+     * Remove the item at back of the list where list[size() - 1] is considered the back
+     *
+     * @throws NoSuchElementException if size() == 0
+     */
+    T popBack();
+
+    /**
+     * Retrieves, but does not remove, the item at the front of the list where list[0] is considered the front
+     *
+     * @throws NoSuchElementException if size() == 0
+     */
+    T peekFront();
+
+    /**
+     * Retrieves, but does not remove, the item at back of the list where list[size() - 1] is considered the back
+     *
+     * @throws NoSuchElementException if size() == 0
+     */
+    T peekBack();
 
     /**
      * Inserts an item into the given index of the list, shifting all items to the right (back) to accommodate the
@@ -81,16 +110,6 @@ public interface List<T> extends Iterable<T> {
     void clear();
 
     /**
-     * Returns the maximum item in the list as defined by its compareTo() method
-     */
-    T max(Comparator<T> comparator);
-
-    /**
-     * Returns the minimum item in the list as defined by its compareTo() method
-     */
-    T min(Comparator<T> comparator);
-
-    /**
      * Walks the list to return a fixed-sized array of all the items in the list.
      */
     @SuppressWarnings("unchecked")
@@ -110,19 +129,5 @@ public interface List<T> extends Iterable<T> {
         }
 
         return arr;
-    }
-
-    @SuppressWarnings("unchecked")
-    default boolean has(T... thatArr) {
-        T[] thisArr = toArray();
-        if (thisArr.length != thatArr.length) {
-            return false;
-        }
-        for (int i = 0; i < thisArr.length; ++i) {
-            if (!Objects.equals(thisArr[i], thatArr[i])) {
-                return false;
-            }
-        }
-        return true;
     }
 }
