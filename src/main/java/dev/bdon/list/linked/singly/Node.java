@@ -4,15 +4,15 @@ public class Node<T> {
     private T data;
     private Node<T> next;
 
-    Node() {
+    public Node() {
         this(null, null);
     }
 
-    Node(T data) {
+    public Node(T data) {
         this(data, null);
     }
 
-    Node(T data, Node<T> next) {
+    public Node(T data, Node<T> next) {
         this.data = data;
         this.next = next;
     }
@@ -21,7 +21,7 @@ public class Node<T> {
         return data;
     }
 
-    void setData(T data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -29,7 +29,7 @@ public class Node<T> {
         return next;
     }
 
-    void setNext(Node<T> next) {
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 

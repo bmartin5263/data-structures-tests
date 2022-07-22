@@ -1,5 +1,6 @@
 package dev.bdon;
 
+import dev.bdon.impl.SinglyLinkedListImpl;
 import dev.bdon.list.List;
 import dev.bdon.list.linked.singly.Node;
 import dev.bdon.list.linked.singly.SinglyLinkedList;
@@ -10,12 +11,10 @@ import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.fail;
 
-@SuppressWarnings("ConstantConditions")
 class SinglyLinkedListTest {
 
     private <T extends Comparable<T>> SinglyLinkedList<T> createList() {
-        // TODO - replace with your implementation
-        return null;
+        return new SinglyLinkedListImpl<>();
     }
 
     @Test
@@ -289,7 +288,7 @@ class SinglyLinkedListTest {
             fail("Expected exception of type " + clazz.getSimpleName() + " to be thrown");
         }
         catch (RuntimeException ex) {
-            assert ex.getClass().equals(clazz);
+            assert ex.getClass().equals(clazz) : "Expected exception of type " + clazz.getSimpleName() + " to be thrown, but instead found " + ex.getClass().getSimpleName();
         }
     }
 

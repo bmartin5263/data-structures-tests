@@ -81,16 +81,6 @@ public interface List<T> extends Iterable<T> {
     void clear();
 
     /**
-     * Sorts the list in-place
-     */
-    void sort();
-
-    /**
-     * Returns a new list based on the current list in sorted order
-     */
-    List<T> sorted();
-
-    /**
      * Returns the maximum item in the list as defined by its compareTo() method
      */
     T max(Comparator<T> comparator);

@@ -1,17 +1,33 @@
 package dev.bdon.impl;
 
-import dev.bdon.interfaces.SinglyLinkedList;
 
+import dev.bdon.list.List;
+import dev.bdon.list.linked.singly.Node;
+import dev.bdon.list.linked.singly.SinglyLinkedList;
+
+import java.util.Comparator;
 import java.util.Iterator;
 
-public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLinkedList<T> {
+public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
 
     private Node<T> head;
     private int size;
 
     @Override
+    public T get(int index) {
+        assertInBounds(index, size());
+        Node<T> current = head;
+        int count = 0;
+        while (count != index) {
+            current = current.getNext();
+            ++count;
+        }
+        return current.getData();
+    }
+
+    @Override
     public void pushFront(T data) {
-        head = new NodeImpl<>(data, head);
+        head = new Node<>(data, head);
         ++size;
     }
 
@@ -25,34 +41,45 @@ public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLink
             while (current.getNext() != null) {
                 current = current.getNext();
             }
-            current.setNext(new NodeImpl<>(data));
+            current.setNext(new Node<>(data));
             ++size;
         }
     }
 
     @Override
-    public void insert(int pos, T data) {
-        if (pos == 0) {
+    public void insert(int index, T data) {
+        assertInBounds(index, size());
+        if (index == 0) {
             pushFront(data);
         }
-        else if (pos == size()) {
+        else if (index == size()) {
             pushBack(data);
         }
         else {
-            int count = pos - 1;
+            int count = index - 1;
             Node<T> before = head;
             while (count > 0) {
                 before = before.getNext();
                 --count;
             }
-            before.setNext(new NodeImpl<>(data, before.getNext()));
+            before.setNext(new Node<>(data, before.getNext()));
             ++size;
         }
     }
 
     @Override
+    public void set(int index, T data) {
+        assertInBounds(index, size());
+    }
+
+    @Override
     public Node<T> head() {
         return head;
+    }
+
+    @Override
+    public Node<T> tail() {
+        return null;
     }
 
     @Override
@@ -124,13 +151,24 @@ public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLink
     }
 
     @Override
+    public void removeAt(int index) {
+        assertInBounds(index, size() - 1);
+    }
+
+    private void assertInBounds(int index, int upperBound) {
+        if (index < 0 || index > upperBound) {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    @Override
     public void clear() {
         head = null;
         size = 0;
     }
 
     @Override
-    public T max() {
+    public T max(Comparator<T> comparator) {
         if (isEmpty()) {
             return null;
         }
@@ -139,7 +177,7 @@ public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLink
         var current = head.getNext();
 
         while (current != null) {
-            if (current.getData().compareTo(currentMax) > 0) {
+            if (comparator.compare(current.getData(), currentMax) > 0) {
                 currentMax = current.getData();
             }
             current = current.getNext();
@@ -149,7 +187,7 @@ public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLink
     }
 
     @Override
-    public T min() {
+    public T min(Comparator<T> comparator) {
         if (isEmpty()) {
             return null;
         }
@@ -158,41 +196,12 @@ public class SinglyLinkedListImpl<T extends Comparable<T>> implements SinglyLink
         var current = head.getNext();
 
         while (current != null) {
-            if (current.getData().compareTo(currentMin) < 0) {
+            if (comparator.compare(current.getData(), currentMin) < 0) {
                 currentMin = current.getData();
             }
             current = current.getNext();
         }
 
         return currentMin;
-    }
-
-    public static class NodeImpl<T extends Comparable<T>> implements Node<T> {
-
-        private final T data;
-        private Node<T> next;
-
-        public NodeImpl(T data) {
-            this(data, null);
-        }
-
-        public NodeImpl(T data, Node<T> next) {
-            this.data = data;
-            this.next = next;
-        }
-
-        @Override
-        public T getData() {
-            return data;
-        }
-
-        @Override
-        public Node<T> getNext() {
-            return next;
-        }
-
-        public void setNext(Node<T> next) {
-            this.next = next;
-        }
     }
 }
