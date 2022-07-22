@@ -6,6 +6,7 @@ import dev.bdon.list.linked.singly.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 
 import java.util.Comparator;
+import java.util.NoSuchElementException;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.fail;
@@ -26,7 +27,8 @@ class SinglyLinkedListTest {
         assert list.head() == null;
 
         list.pushBack(1);
-        assert list.head() != null;
+        assert list.head().getData() == 1;
+        assert list.tail().getData() == 1;
         assert list.size() == 1;
         assert !list.isEmpty();
 
@@ -35,6 +37,7 @@ class SinglyLinkedListTest {
         list.pushBack(4);
         list.pushBack(5);
         assert list.size() == 5;
+        assert list.tail().getData() == 5;
 
         Node<Integer> current = list.head();
         assert current.getData() == 1;
@@ -65,11 +68,14 @@ class SinglyLinkedListTest {
         assert list.head() == null;
 
         list.pushFront(1);
+        assert list.head().getData() == 1;
+        assert list.tail().getData() == 1;
+
         list.pushFront(2);
         list.pushFront(3);
         list.pushFront(4);
         list.pushFront(5);
-        assert list.head() != null;
+        assert list.tail().getData() == 1;
         assert list.size() == 5;
         assert !list.isEmpty();
 
@@ -126,12 +132,90 @@ class SinglyLinkedListTest {
     void should_fail_to_get_items_by_numeric_index_when_out_of_bounds() {
         SinglyLinkedList<String> list = createList();
 
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(0));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(1));
+
         list.pushBack("Apple");
         list.pushBack("Banana");
         list.pushBack("Cherry");
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(4));
+    }
+
+    @Test
+    void should_set_items_by_numeric_index() {
+        SinglyLinkedList<String> list = createList();
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+
+        list.set(0, "A");
+        list.set(1, "B");
+        list.set(2, "C");
+
+        assert containsAll(list, "A", "B", "C");
+    }
+
+    @Test
+    void should_fail_to_set_items_by_numeric_index_when_out_of_bounds() {
+        SinglyLinkedList<String> list = createList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(-1, "hehe"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(0, "hehe"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(1, "hehe"));
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(-1, "hehe"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.set(4, "hehe"));
+    }
+
+    @Test
+    void should_peek_list() {
+        SinglyLinkedList<Integer> list = createList();
+
+        list.pushBack(1);
+        list.pushBack(2);
+        list.pushBack(3);
+
+        assert list.peekFront() == 1;
+        assert list.peekBack() == 3;
+    }
+
+    @Test
+    void should_fail_to_peek_list_when_empty() {
+        SinglyLinkedList<Integer> list = createList();
+        assertThrows(NoSuchElementException.class, list::peekBack);
+        assertThrows(NoSuchElementException.class, list::peekFront);
+    }
+
+    @Test
+    void should_pop_from_list() {
+        SinglyLinkedList<Integer> list = createList();
+
+        list.pushBack(1);
+        list.pushBack(2);
+        list.pushBack(3);
+
+        assert list.popFront() == 1;
+        assert list.popBack() == 3;
+        assert list.popBack() == 2;
+
+        assert list.isEmpty();
+        assert list.head() == null;
+        assert list.tail() == null;
+    }
+
+    @Test
+    void should_fail_to_pop_from_list_when_empty() {
+        SinglyLinkedList<Integer> list = createList();
+        assertThrows(NoSuchElementException.class, list::popBack);
+        assertThrows(NoSuchElementException.class, list::popFront);
     }
 
     @Test
@@ -266,20 +350,6 @@ class SinglyLinkedListTest {
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(-1));
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(3));
-    }
-
-    @Test
-    void should_return_the_max_and_min_items_in_the_list() {
-        SinglyLinkedList<Integer> list = createList();
-
-        list.pushFront(12);
-        list.pushFront(0);
-        list.pushFront(140);
-        list.pushFront(-333);
-        list.pushFront(38);
-
-        assert list.max(Comparator.naturalOrder()) == 140;
-        assert list.min(Comparator.naturalOrder()) == -333;
     }
 
     @SuppressWarnings("SameParameterValue")

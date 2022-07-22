@@ -5,19 +5,19 @@ public class Node<T> {
     private Node<T> next;
     private Node<T> prev;
 
-    Node() {
+    public Node() {
         this(null, null);
     }
 
-    Node(T data) {
+    public Node(T data) {
         this(data, null);
     }
 
-    Node(T data, Node<T> next) {
+    public Node(T data, Node<T> next) {
         this(data, next, null);
     }
 
-    Node(T data, Node<T> next, Node<T> prev) {
+    public Node(T data, Node<T> next, Node<T> prev) {
         this.data = data;
         this.next = next;
         this.prev = prev;
@@ -27,7 +27,7 @@ public class Node<T> {
         return data;
     }
 
-    void setData(T data) {
+    public void setData(T data) {
         this.data = data;
     }
 
@@ -35,7 +35,7 @@ public class Node<T> {
         return next;
     }
 
-    void setNext(Node<T> next) {
+    public void setNext(Node<T> next) {
         this.next = next;
     }
 
@@ -43,7 +43,7 @@ public class Node<T> {
         return prev;
     }
 
-    void setPrev(Node<T> prev) {
+    public void setPrev(Node<T> prev) {
         this.prev = prev;
     }
 
