@@ -1,11 +1,14 @@
 package dev.bdon;
 
-import dev.bdon.interfaces.SinglyLinkedList;
+import dev.bdon.list.List;
+import dev.bdon.list.linked.singly.Node;
+import dev.bdon.list.linked.singly.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 
 @SuppressWarnings("ConstantConditions")
 class SinglyLinkedListTest {
@@ -33,7 +36,7 @@ class SinglyLinkedListTest {
         list.pushBack(5);
         assert list.size() == 5;
 
-        SinglyLinkedList.Node<Integer> current = list.head();
+        Node<Integer> current = list.head();
         assert current.getData() == 1;
         assert current.getNext() != null;
 
@@ -70,7 +73,7 @@ class SinglyLinkedListTest {
         assert list.size() == 5;
         assert !list.isEmpty();
 
-        SinglyLinkedList.Node<Integer> current = list.head();
+        Node<Integer> current = list.head();
         assert current.getData() == 5;
         assert current.getNext() != null;
 
@@ -107,62 +110,162 @@ class SinglyLinkedListTest {
     }
 
     @Test
+    void should_get_items_by_numeric_index() {
+        SinglyLinkedList<String> list = createList();
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+
+        assert list.get(0).equals("Apple");
+        assert list.get(1).equals("Banana");
+        assert list.get(2).equals("Cherry");
+    }
+
+    @Test
+    void should_fail_to_get_items_by_numeric_index_when_out_of_bounds() {
+        SinglyLinkedList<String> list = createList();
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.get(4));
+    }
+
+    @Test
     void should_insert_items_into_arbitrary_positions_of_list() {
         SinglyLinkedList<String> list = createList();
 
         list.insert(0, "Banana");
-        assert Arrays.deepEquals(list.toArray(), arrayOf("Banana"));
+        assert containsAll(list, "Banana");
 
         list.insert(1, "Egg");
-        assert Arrays.deepEquals(list.toArray(), arrayOf("Banana", "Egg"));
+        assert containsAll(list, "Banana", "Egg");
 
         list.insert(0, "Apple");
-        assert Arrays.deepEquals(list.toArray(), arrayOf("Apple", "Banana", "Egg"));
+        assert containsAll(list, "Apple", "Banana", "Egg");
 
         list.insert(2, "Daikon");
-        assert Arrays.deepEquals(list.toArray(), arrayOf("Apple", "Banana", "Daikon", "Egg"));
+        assert containsAll(list, "Apple", "Banana", "Daikon", "Egg");
 
         list.insert(2, "Cherry");
-        assert Arrays.deepEquals(list.toArray(), arrayOf("Apple", "Banana", "Cherry", "Daikon", "Egg"));
+        assert containsAll(list, "Apple", "Banana", "Cherry", "Daikon", "Egg");
 
         assert !list.isEmpty();
         assert list.size() == 5;
     }
 
     @Test
-    void should_clear_list_after_adding_items() {
+    void should_fail_to_insert_items_when_index_is_out_of_bounds() {
         SinglyLinkedList<String> list = createList();
 
-        list.pushBack("1");
-        list.pushBack("2");
-        list.pushBack("3");
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert(-1, "Apple"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert(1, "Apple"));
+
+        list.insert(0, "Apple");
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert(-2, "Banana"));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.insert(2, "Banana"));
+    }
+
+    @Test
+    void should_clear_list_after_adding_items() {
+        SinglyLinkedList<Integer> list = createList();
+
+        list.pushBack(1);
+        list.pushBack(2);
+        list.pushBack(3);
+        assert containsAll(list, 1, 2, 3);
+
         list.clear();
 
+        assert list.isEmpty();
+        assert list.size() == 0;
+        assert list.head() == null;
+
+        list.pushBack(1);
+        list.pushBack(2);
+        list.pushBack(3);
+        assert containsAll(list, 1, 2, 3);
+    }
+
+    @Test
+    void should_remove_items_from_list_one_by_one_by_value() {
+        SinglyLinkedList<String> list = createList();
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+        list.pushBack("Daikon");
+        list.pushBack("Cherry");
+        list.pushBack("Egg");
+
+        assert list.remove("Apple");
+        assert containsAll(list, "Banana", "Cherry", "Daikon", "Cherry", "Egg");
+
+        assert !list.remove("Apple") : "Apple cannot be removed twice, there is only one in the list";
+
+        assert list.remove("Cherry");
+        assert containsAll(list, "Banana", "Daikon", "Cherry", "Egg");
+
+        assert list.remove("Daikon");
+        assert containsAll(list, "Banana", "Cherry", "Egg");
+
+        assert list.remove("Egg");
+        assert containsAll(list, "Banana", "Cherry");
+
+        assert list.remove("Cherry") : "Cherry should be able to be removed twice, since there were two in the list";
+        assert containsAll(list, "Banana");
+
+        assert list.remove("Banana");
         assert list.isEmpty();
         assert list.size() == 0;
         assert list.head() == null;
     }
 
     @Test
-    void should_remove_items_from_list_one_by_one() {
+    void should_remove_items_from_list_one_by_one_by_index() {
         SinglyLinkedList<String> list = createList();
+
+        list.pushBack("Apple");
+        list.pushBack("Banana");
+        list.pushBack("Cherry");
+        list.pushBack("Daikon");
+        list.pushBack("Egg");
+
+        list.removeAt(0);
+        assert containsAll(list, "Banana", "Cherry", "Daikon", "Egg");
+
+        list.removeAt(2);
+        assert containsAll(list, "Banana", "Cherry", "Egg");
+
+        list.removeAt(2);
+        assert containsAll(list, "Banana", "Cherry");
+
+        list.removeAt(1);
+        assert containsAll(list, "Banana");
+
+        list.removeAt(0);
+        assert list.isEmpty();
+        assert list.size() == 0;
+        assert list.head() == null;
+    }
+
+    @Test
+    void should_fail_to_remove_items_from_list_by_index_if_index_is_out_of_bounds() {
+        SinglyLinkedList<String> list = createList();
+
+        assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(0));
 
         list.pushBack("1");
         list.pushBack("2");
         list.pushBack("3");
-        list.pushBack("4");
-        list.pushBack("5");
 
-        assert list.remove("1");
-        assert !list.remove("1");
-        assert list.remove("4");
-        assert list.remove("5");
-        assert list.remove("3");
-        assert list.remove("2");
-
-        assert list.isEmpty();
-        assert list.size() == 0;
-        assert list.head() == null;
+        assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(-1));
+        assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(3));
     }
 
     @Test
@@ -175,12 +278,32 @@ class SinglyLinkedListTest {
         list.pushFront(-333);
         list.pushFront(38);
 
-        assert list.max() == 140;
-        assert list.min() == -333;
+        assert list.max(Comparator.naturalOrder()) == 140;
+        assert list.min(Comparator.naturalOrder()) == -333;
     }
 
-    @SafeVarargs
-    private <T> T[] arrayOf(T... items) {
-        return items;
+    @SuppressWarnings("SameParameterValue")
+    private void assertThrows(Class<? extends RuntimeException> clazz, Runnable code) {
+        try {
+            code.run();
+            fail("Expected exception of type " + clazz.getSimpleName() + " to be thrown");
+        }
+        catch (RuntimeException ex) {
+            assert ex.getClass().equals(clazz);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> boolean containsAll(List<T> list, T... thatArr) {
+        T[] thisArr = list.toArray();
+        if (thisArr.length != thatArr.length) {
+            return false;
+        }
+        for (int i = 0; i < thisArr.length; ++i) {
+            if (!Objects.equals(thisArr[i], thatArr[i])) {
+                return false;
+            }
+        }
+        return true;
     }
 }
