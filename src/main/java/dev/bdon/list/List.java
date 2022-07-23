@@ -114,18 +114,18 @@ public interface List<T> extends Iterable<T> {
      */
     @SuppressWarnings("unchecked")
     default T[] toArray() {
-        int count = 0;
+        int size = 0;
         Iterator<T> current = iterator();
         while (current.hasNext()) {
-            ++count;
+            ++size;
             current.next();
         }
-        T[] arr = (T[]) new Comparable[count];
+        T[] arr = (T[]) new Comparable[size];
 
-        count = 0;
         current = iterator();
+        int index = 0;
         while (current.hasNext()) {
-            arr[count++] = current.next();
+            arr[index++] = current.next();
         }
 
         return arr;

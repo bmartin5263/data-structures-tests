@@ -17,22 +17,22 @@ public interface SinglyLinkedList<T> extends List<T> {
     Node<T> tail();
 
     @Override
+    @SuppressWarnings("unchecked")
     default T[] toArray() {
-        int count = 0;
+        int size = 0;
         Node<T> current = head();
         while (current != null) {
-            ++count;
+            ++size;
             current = current.getNext();
         }
-        T[] arr = (T[]) new Comparable[count];
+        T[] arr = (T[]) new Comparable[size];
 
-        count = 0;
         current = head();
+        int index = 0;
         while (current != null) {
-            arr[count++] = current.getData();
+            arr[index++] = current.getData();
             current = current.getNext();
         }
-
         return arr;
     }
 }
