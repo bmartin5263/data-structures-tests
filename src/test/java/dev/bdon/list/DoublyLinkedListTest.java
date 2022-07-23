@@ -1,26 +1,24 @@
-package dev.bdon;
+package dev.bdon.list;
 
-import dev.bdon.list.List;
-import dev.bdon.list.linked.singly.Node;
-import dev.bdon.list.linked.singly.SinglyLinkedList;
+import dev.bdon.list.linked.doubly.Node;
+import dev.bdon.list.linked.doubly.DoublyLinkedList;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import static org.assertj.core.api.Assertions.as;
 import static org.assertj.core.api.Assertions.fail;
 
-class SinglyLinkedListTest {
+class DoublyLinkedListTest {
 
-    private <T> SinglyLinkedList<T> createList() {
+    private <T> DoublyLinkedList<T> createList() {
         // TODO - replace null with your implementation
         return null;
     }
 
     @Test
     void should_insert_items_to_the_back_of_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -52,27 +50,57 @@ class SinglyLinkedListTest {
         Node<Integer> current = list.head();
         assert current.getData() == 1;
         assert current.getNext() != null;
+        assert current.getPrev() == null;
 
         current = current.getNext();
         assert current.getData() == 2;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 3;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 4;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 5;
         assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = list.tail();
+        assert current.getData() == 5;
+        assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 4;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 3;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 2;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 1;
+        assert current.getNext() != null;
+        assert current.getPrev() == null;
     }
 
     @Test
     void should_insert_items_to_the_front_of_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushFront(1);
@@ -104,27 +132,57 @@ class SinglyLinkedListTest {
         Node<Integer> current = list.head();
         assert current.getData() == 5;
         assert current.getNext() != null;
+        assert current.getPrev() == null;
 
         current = current.getNext();
         assert current.getData() == 4;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 3;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 2;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 1;
         assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = list.tail();
+        assert current.getData() == 1;
+        assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 2;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 3;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 4;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 5;
+        assert current.getNext() != null;
+        assert current.getPrev() == null;
     }
 
     @Test
     void should_insert_items_to_both_the_front_and_back_of_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -161,27 +219,57 @@ class SinglyLinkedListTest {
         Node<Integer> current = list.head();
         assert current.getData() == 5;
         assert current.getNext() != null;
+        assert current.getPrev() == null;
 
         current = current.getNext();
         assert current.getData() == 3;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 2;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 1;
         assert current.getNext() != null;
+        assert current.getPrev() != null;
 
         current = current.getNext();
         assert current.getData() == 4;
         assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = list.tail();
+        assert current.getData() == 4;
+        assert current.getNext() == null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 1;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 2;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 3;
+        assert current.getNext() != null;
+        assert current.getPrev() != null;
+
+        current = current.getNext();
+        assert current.getData() == 5;
+        assert current.getNext() != null;
+        assert current.getPrev() == null;
     }
 
     @Test
     void should_test_if_list_contains_specified_items() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         assert !list.contains("Apple");
@@ -197,7 +285,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_get_items_by_numeric_index() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         list.pushBack("Apple");
@@ -211,7 +299,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_get_items_by_numeric_index_when_out_of_bounds() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.get(-1));
@@ -228,7 +316,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_set_items_by_numeric_index() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         list.pushBack("Apple");
@@ -246,7 +334,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_set_items_by_numeric_index_when_out_of_bounds() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.set(-1, "hehe"));
@@ -263,7 +351,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_peek_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -276,7 +364,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_peek_list_when_empty() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
         assertThrows(NoSuchElementException.class, list::peekBack);
         assertThrows(NoSuchElementException.class, list::peekFront);
@@ -284,7 +372,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_pop_front_from_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -305,7 +393,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_pop_back_from_list() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -326,7 +414,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_pop_from_list_when_empty() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
         assertThrows(NoSuchElementException.class, list::popBack);
         assertThrows(NoSuchElementException.class, list::popFront);
@@ -334,7 +422,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_insert_items_into_arbitrary_positions_of_list() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         list.insert(0, "Banana");
@@ -360,7 +448,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_insert_items_when_index_is_out_of_bounds() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.insert(-1, "Apple"));
@@ -374,7 +462,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_clear_list_after_adding_items() {
-        SinglyLinkedList<Integer> list = createList();
+        DoublyLinkedList<Integer> list = createList();
         assert list.isEmpty();
 
         list.pushBack(1);
@@ -396,7 +484,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_remove_items_from_list_one_by_one_by_value() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         list.pushBack("Apple");
@@ -437,7 +525,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_remove_items_from_list_one_by_one_by_index() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         list.pushBack("Apple");
@@ -464,7 +552,7 @@ class SinglyLinkedListTest {
 
     @Test
     void should_fail_to_remove_items_from_list_by_index_if_index_is_out_of_bounds() {
-        SinglyLinkedList<String> list = createList();
+        DoublyLinkedList<String> list = createList();
         assert list.isEmpty();
 
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(-1));
@@ -498,7 +586,7 @@ class SinglyLinkedListTest {
         }
     }
 
-    private <T> void assertEmpty(SinglyLinkedList<T> list) {
+    private <T> void assertEmpty(DoublyLinkedList<T> list) {
         assert list.isEmpty();
         assert list.size() == 0;
         assert list.head() == null;
