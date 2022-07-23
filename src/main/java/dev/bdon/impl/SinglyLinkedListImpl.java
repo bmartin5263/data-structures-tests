@@ -7,15 +7,17 @@ import dev.bdon.list.linked.singly.SinglyLinkedList;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
 
     private Node<T> head;
+    private Node<T> tail;
     private int size;
 
     @Override
     public T get(int index) {
-        assertInBounds(index, size());
+        assertInBounds(index, size() - 1);
         Node<T> current = head;
         int count = 0;
         while (count != index) {
@@ -27,23 +29,86 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
 
     @Override
     public void pushFront(T data) {
-        head = new Node<>(data, head);
+        if (isEmpty()) {
+            Node<T> n = new Node<>(data);
+            head = n;
+            tail = n;
+        }
+        else {
+            head = new Node<>(data, head);
+        }
         ++size;
     }
 
     @Override
     public void pushBack(T data) {
-        if (head == null) {
-            pushFront(data);
+        if (isEmpty()) {
+            Node<T> n = new Node<>(data);
+            head = n;
+            tail = n;
         }
         else {
-            Node<T> current = head;
-            while (current.getNext() != null) {
-                current = current.getNext();
-            }
-            current.setNext(new Node<>(data));
-            ++size;
+            tail.setNext(new Node<>(data, null));
+            tail = tail.getNext();
         }
+        ++size;
+    }
+
+    @Override
+    public T popFront() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        else {
+            --size;
+            Node<T> out = head;
+            if (head == tail) {
+                head = null;
+                tail = null;
+            }
+            else {
+                head = head.getNext();
+            }
+            return out.getData();
+        }
+    }
+
+    @Override
+    public T popBack() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        --size;
+        Node<T> out = tail;
+        if (tail == head) {
+            head = null;
+            tail = null;
+        }
+        else {
+            Node<T> before = head;
+            while (before.getNext() != tail) {
+                before = before.getNext();
+            }
+            tail = before;
+            before.setNext(null);
+        }
+        return out.getData();
+    }
+
+    @Override
+    public T peekFront() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return head.getData();
+    }
+
+    @Override
+    public T peekBack() {
+        if (isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return tail.getData();
     }
 
     @Override
@@ -69,7 +134,14 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
 
     @Override
     public void set(int index, T data) {
-        assertInBounds(index, size());
+        assertInBounds(index, size() - 1);
+        Node<T> current = head;
+        int count = 0;
+        while (count < index) {
+            ++count;
+            current = current.getNext();
+        }
+        current.setData(data);
     }
 
     @Override
@@ -79,7 +151,7 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
 
     @Override
     public Node<T> tail() {
-        return null;
+        return tail;
     }
 
     @Override
@@ -131,7 +203,13 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
         }
 
         if (head.getData().equals(o)) {
-            head = head.getNext();
+            if (head == tail) {
+                head = null;
+                tail = null;
+            }
+            else {
+                head = head.getNext();
+            }
             --size;
             return true;
         }
@@ -141,6 +219,9 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
             var nextData = before.getNext().getData();
             if (o.equals(nextData)) {
                 before.setNext(before.getNext().getNext());
+                if (before.getNext() == null) {
+                    tail = before;
+                }
                 --size;
                 return true;
             }
@@ -153,6 +234,22 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
     @Override
     public void removeAt(int index) {
         assertInBounds(index, size() - 1);
+        if (index == 0) {
+            popFront();
+        }
+        else if (index == size() - 1) {
+            popBack();
+        }
+        else {
+            --size;
+            Node<T> before = head;
+            int count = 1;
+            while (count != index) {
+                before = before.getNext();
+                ++count;
+            }
+            before.setNext(before.getNext().getNext());
+        }
     }
 
     private void assertInBounds(int index, int upperBound) {
@@ -164,44 +261,7 @@ public class SinglyLinkedListImpl<T> implements SinglyLinkedList<T> {
     @Override
     public void clear() {
         head = null;
+        tail = null;
         size = 0;
-    }
-
-    @Override
-    public T max(Comparator<T> comparator) {
-        if (isEmpty()) {
-            return null;
-        }
-
-        var currentMax = head.getData();
-        var current = head.getNext();
-
-        while (current != null) {
-            if (comparator.compare(current.getData(), currentMax) > 0) {
-                currentMax = current.getData();
-            }
-            current = current.getNext();
-        }
-
-        return currentMax;
-    }
-
-    @Override
-    public T min(Comparator<T> comparator) {
-        if (isEmpty()) {
-            return null;
-        }
-
-        var currentMin = head.getData();
-        var current = head.getNext();
-
-        while (current != null) {
-            if (comparator.compare(current.getData(), currentMin) < 0) {
-                currentMin = current.getData();
-            }
-            current = current.getNext();
-        }
-
-        return currentMin;
     }
 }
