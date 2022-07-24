@@ -1,5 +1,6 @@
 package dev.bdon.list;
 
+import dev.bdon.impl.SinglyLinkedListImpl;
 import dev.bdon.list.List;
 import dev.bdon.list.linked.singly.Node;
 import dev.bdon.list.linked.singly.SinglyLinkedList;
@@ -14,8 +15,7 @@ import static org.assertj.core.api.Assertions.fail;
 class SinglyLinkedListTest {
 
     private <T> SinglyLinkedList<T> createList() {
-        // TODO - replace null with your implementation
-        return null;
+        return new SinglyLinkedListImpl<>();
     }
 
     @Test

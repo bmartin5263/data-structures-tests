@@ -1,9 +1,11 @@
 package dev.bdon.list;
 
+import dev.bdon.impl.DoublyLinkedListImpl;
 import dev.bdon.list.linked.doubly.Node;
 import dev.bdon.list.linked.doubly.DoublyLinkedList;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
@@ -13,7 +15,7 @@ class DoublyLinkedListTest {
 
     private <T> DoublyLinkedList<T> createList() {
         // TODO - replace null with your implementation
-        return null;
+        return new DoublyLinkedListImpl<>();
     }
 
     @Test
@@ -77,22 +79,22 @@ class DoublyLinkedListTest {
         assert current.getNext() == null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 4;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 3;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 2;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 1;
         assert current.getNext() != null;
         assert current.getPrev() == null;
@@ -159,22 +161,22 @@ class DoublyLinkedListTest {
         assert current.getNext() == null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 2;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 3;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 4;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 5;
         assert current.getNext() != null;
         assert current.getPrev() == null;
@@ -246,22 +248,22 @@ class DoublyLinkedListTest {
         assert current.getNext() == null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 1;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 2;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 3;
         assert current.getNext() != null;
         assert current.getPrev() != null;
 
-        current = current.getNext();
+        current = current.getPrev();
         assert current.getData() == 5;
         assert current.getNext() != null;
         assert current.getPrev() == null;
@@ -426,8 +428,6 @@ class DoublyLinkedListTest {
         assert list.isEmpty();
 
         list.insert(0, "Banana");
-
-
         assertContainsInOrder(list, "Banana");
 
         list.insert(1, "Egg");
@@ -580,7 +580,10 @@ class DoublyLinkedListTest {
     @SuppressWarnings("unchecked")
     private <T> void assertContainsInOrder(List<T> list, T... thatArr) {
         T[] thisArr = list.toArray();
-        assert thisArr.length == thatArr.length : "Expected list to have " + thatArr.length + " items, instead has " + thisArr.length + " items";
+        assert thisArr.length == thatArr.length : "" +
+                "Expected list to have " + thatArr.length
+                + " items, instead has " + thisArr.length +
+                " items. " + Arrays.toString(thisArr);
         for (int i = 0; i < thisArr.length; ++i) {
             assert Objects.equals(thisArr[i], thatArr[i]) : "Expected value " + thatArr[i] + " at position " + i +", but instead found: " + thisArr[i];
         }
