@@ -14,7 +14,6 @@ import static org.assertj.core.api.Assertions.fail;
 class SinglyLinkedListTest {
 
     private <T> SinglyLinkedList<T> createList() {
-        // TODO - replace null with your implementation
         return null;
     }
 
@@ -505,3 +504,4 @@ class SinglyLinkedListTest {
         assert list.tail() == null;
     }
 }
+
