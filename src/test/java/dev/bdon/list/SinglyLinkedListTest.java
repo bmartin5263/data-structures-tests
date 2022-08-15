@@ -1,21 +1,20 @@
 package dev.bdon.list;
 
-import dev.bdon.impl.SinglyLinkedListImpl;
-import dev.bdon.list.List;
 import dev.bdon.list.linked.singly.Node;
 import dev.bdon.list.linked.singly.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
-import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-import static org.assertj.core.api.Assertions.as;
+import static dev.bdon.TestUtils.*;
 import static org.assertj.core.api.Assertions.fail;
 
 class SinglyLinkedListTest {
 
     private <T> SinglyLinkedList<T> createList() {
-        return new SinglyLinkedListImpl<>();
+        return null;
     }
 
     @Test
@@ -478,30 +477,17 @@ class SinglyLinkedListTest {
         assertThrows(IndexOutOfBoundsException.class, () -> list.removeAt(3));
     }
 
-    @SuppressWarnings("SameParameterValue")
-    private void assertThrows(Class<? extends RuntimeException> clazz, Runnable code) {
-        try {
-            code.run();
-            fail("Expected exception of type " + clazz.getSimpleName() + " to be thrown");
-        }
-        catch (RuntimeException ex) {
-            assert ex.getClass().equals(clazz) : "Expected exception of type " + clazz.getSimpleName() + " to be thrown, but instead found: " + ex.getClass().getSimpleName();
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    private <T> void assertContainsInOrder(List<T> list, T... thatArr) {
-        T[] thisArr = list.toArray();
-        assert thisArr.length == thatArr.length : "Expected list to have " + thatArr.length + " items, instead has " + thisArr.length + " items";
-        for (int i = 0; i < thisArr.length; ++i) {
-            assert Objects.equals(thisArr[i], thatArr[i]) : "Expected value " + thatArr[i] + " at position " + i +", but instead found: " + thisArr[i];
-        }
-    }
-
-    private <T> void assertEmpty(SinglyLinkedList<T> list) {
+    @Test
+    void should_allow_duplicate_items() {
+        SinglyLinkedList<String> list = createList();
         assert list.isEmpty();
-        assert list.size() == 0;
-        assert list.head() == null;
-        assert list.tail() == null;
+
+        list.pushBack("hello");
+        list.pushBack("hello");
+        list.pushBack("hello");
+
+        assert list.size() == 3;
+        assertContainsInOrder(list, "hello", "hello", "hello");
     }
 }
+
