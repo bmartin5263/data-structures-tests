@@ -5,6 +5,8 @@ import dev.bdon.list.linked.singly.SinglyLinkedList;
 import org.junit.jupiter.api.Test;
 
 import java.util.NoSuchElementException;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 import static dev.bdon.TestUtils.*;
 import static org.assertj.core.api.Assertions.fail;
