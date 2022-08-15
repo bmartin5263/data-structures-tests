@@ -17,5 +17,5 @@ public abstract class Player {
         return symbol;
     }
 
-    abstract void takeTurn(TicTacToe game);
+    public abstract void takeTurn(TicTacToe game);
 }
