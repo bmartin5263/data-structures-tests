@@ -1,6 +1,7 @@
 package dev.bdon.game.tictactoe;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import java.util.Objects;
 
@@ -14,6 +15,7 @@ class TicTacToeTest {
         return game;
     }
 
+    @Test
     void should_play_a_game_the_results_in_player_1_winning() {
         Player[] players = new Player[] {
                 new HumanPlayer("Brandon", "X"),
@@ -102,14 +104,17 @@ class TicTacToeTest {
         assert game.getWinner() == players[0];
     }
 
+    @Test
     void should_play_a_game_the_results_in_player_2_winning() {
 
     }
 
+    @Test
     void should_play_a_game_the_results_in_a_draw() {
 
     }
 
+    @Test
     @Disabled
     void should_play_an_interactive_game_with_two_humans() {
         Player[] players = new Player[] {
@@ -124,6 +129,7 @@ class TicTacToeTest {
         }
     }
 
+    @Test
     @Disabled
     void should_play_an_interactive_game_with_a_human_and_ai() {
         Player[] players = new Player[] {
