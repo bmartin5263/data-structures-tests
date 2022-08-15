@@ -13,7 +13,7 @@ public class HumanPlayer extends Player {
         Scanner in = new Scanner(System.in);
         while (true) {
             try {
-                System.out.println("Please enter a row and column: ");
+                System.out.print(getName() + ", please enter a row and column: ");
                 String line = in.nextLine();
                 String[] split;
                 if (line.contains(",")) {
@@ -26,7 +26,10 @@ public class HumanPlayer extends Player {
                 break;
             }
             catch (IndexOutOfBoundsException ex) {
-                System.out.println("Row or column are invalid");
+                System.out.println("Row and/or column is out of range");
+            }
+            catch (IllegalArgumentException ex) {
+                System.out.println("Space is already occupied");
             }
             catch (Exception ex) {
                 System.out.println("Cannot read input");

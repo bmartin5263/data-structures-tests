@@ -15,12 +15,11 @@ public interface TicTacToe {
      * @param row - the board's row, 0-indexed
      * @param col - the board's column, 0-indexed
      *
-     * @return true if the game is not yet finished, false if the game is finished (i.e. there is a winner or draw)
-     *
-     * @throws IllegalStateException if it is not player's turn
      * @throws IndexOutOfBoundsException if row < 0 || row >= 3 || col < 0 || col >= 3
+     * @throws IllegalArgumentException if the spot at row & col is occupied
+     * @throws IllegalStateException if the game is over
      */
-    boolean placePiece(int row, int col);
+    void placePiece(int row, int col);
 
     /**
      * Returns the piece at the given location, or an empty string if there isn't a piece there
@@ -35,7 +34,7 @@ public interface TicTacToe {
     /**
      * Returns true if the game is finished, false if otherwise
      */
-    boolean isComplete();
+    boolean isGameOver();
 
     /**
      * Returns the player whose turn it currently is
@@ -48,9 +47,4 @@ public interface TicTacToe {
      * @throws IllegalStateException if the game is not yet over
      */
     Player getWinner();
-
-    /**
-     * Returns a visual representation of the board
-     */
-    String toString();
 }
