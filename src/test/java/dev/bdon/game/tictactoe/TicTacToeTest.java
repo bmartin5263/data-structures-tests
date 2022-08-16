@@ -1,6 +1,5 @@
 package dev.bdon.game.tictactoe;
 
-import dev.bdon.impl.TicTacToeImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TicTacToeTest {
 
     private static TicTacToe newGame(Player[] players) {
-        TicTacToe game = new TicTacToeImpl();
+        TicTacToe game = null;
         game.newGame(players);
         return game;
     }
