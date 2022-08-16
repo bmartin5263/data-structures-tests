@@ -16,7 +16,49 @@ class TicTacToeTest {
     }
 
     @Test
-    void should_play_a_game_the_results_in_player_1_winning() {
+    void place_piece_should_validate_inputs() {
+        Player[] players = new Player[] {
+                new HumanPlayer("Brandon", "X"),
+                new HumanPlayer("Mark", "O"),
+        };
+
+        TicTacToe game = newGame(players);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"", "", ""},
+                {"", "", ""}
+        });
+
+        game.placePiece(1, 0);
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"X", "", ""},
+                {"", "", ""}
+        });
+
+        assertThrows(IndexOutOfBoundsException.class, () -> game.placePiece(-1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> game.placePiece(4, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> game.placePiece(0, -1));
+        assertThrows(IndexOutOfBoundsException.class, () -> game.placePiece(0, 4));
+        assertThrows(IllegalArgumentException.class, () -> game.placePiece(1, 0));
+
+        game.placePiece(0, 0);
+        game.placePiece(1, 1);
+        game.placePiece(0, 1);
+        game.placePiece(1, 2);
+        assert boardEquals(game, new String[][]{
+                {"O", "O", ""},
+                {"X", "X", "X"},
+                {"", "", ""}
+        });
+        assert game.isGameOver();
+        assert game.getWinner() == players[0];
+        assertThrows(IllegalStateException.class, () -> game.placePiece(2, 0));
+    }
+
+    @Test
+    void should_play_a_game_that_results_in_player_1_winning() {
         Player[] players = new Player[] {
                 new HumanPlayer("Brandon", "X"),
                 new HumanPlayer("Mark", "O"),
@@ -96,13 +138,172 @@ class TicTacToeTest {
     }
 
     @Test
-    void should_play_a_game_the_results_in_player_2_winning() {
+    void should_play_a_game_that_results_in_a_draw() {
+        Player[] players = new Player[] {
+                new HumanPlayer("Brandon", "X"),
+                new HumanPlayer("Mark", "O"),
+        };
 
+        TicTacToe game = newGame(players);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"", "", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(1, 0);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"X", "", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(1, 1);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"X", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 0);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "", ""},
+                {"X", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(2, 0);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "", ""},
+                {"X", "O", ""},
+                {"O", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 2);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "", "X"},
+                {"X", "O", ""},
+                {"O", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 1);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "O", "X"},
+                {"X", "O", ""},
+                {"O", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(2, 1);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "O", "X"},
+                {"X", "O", ""},
+                {"O", "X", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(1, 2);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "O", "X"},
+                {"X", "O", "X"},
+                {"O", "X", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(2, 2);
+        assert game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "O", "X"},
+                {"X", "O", "X"},
+                {"O", "X", "O"}
+        });
+        assert game.getWinner() == null;
     }
 
     @Test
-    void should_play_a_game_the_results_in_a_draw() {
+    void should_play_a_game_that_results_in_player_2_winning() {
+        Player[] players = new Player[] {
+                new HumanPlayer("Brandon", "X"),
+                new HumanPlayer("Mark", "O"),
+        };
 
+        TicTacToe game = newGame(players);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"", "", ""},
+                {"", "", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 0);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "", ""},
+                {"", "", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(1, 1);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "", ""},
+                {"", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 1);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "X", ""},
+                {"", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(0, 2);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "X", "O"},
+                {"", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(1, 0);
+        assert !game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "X", "O"},
+                {"X", "O", ""},
+                {"", "", ""}
+        });
+        assertThrows(IllegalStateException.class, game::getWinner);
+
+        game.placePiece(2, 0);
+        assert game.isGameOver();
+        assert boardEquals(game, new String[][]{
+                {"X", "X", "O"},
+                {"X", "O", ""},
+                {"O", "", ""}
+        });
+        assert game.getWinner() == players[1];
     }
 
     public static void main(String[] args) {
