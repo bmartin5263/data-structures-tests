@@ -1,8 +1,10 @@
 package dev.bdon.game.tictactoe;
 
+import dev.bdon.impl.TicTacToeImpl;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TicTacToeTest {
 
     private static TicTacToe newGame(Player[] players) {
-        TicTacToe game = null;
+        TicTacToe game = new TicTacToeImpl();
         game.newGame(players);
         return game;
     }
@@ -24,14 +26,14 @@ class TicTacToeTest {
 
         TicTacToe game = newGame(players);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"", "", ""},
                 {"", "", ""}
         });
 
         game.placePiece(1, 0);
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"X", "", ""},
                 {"", "", ""}
@@ -47,7 +49,7 @@ class TicTacToeTest {
         game.placePiece(1, 1);
         game.placePiece(0, 1);
         game.placePiece(1, 2);
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"O", "O", ""},
                 {"X", "X", "X"},
                 {"", "", ""}
@@ -66,7 +68,7 @@ class TicTacToeTest {
 
         TicTacToe game = newGame(players);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"", "", ""},
                 {"", "", ""}
@@ -75,7 +77,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"", "X", ""},
                 {"", "", ""}
@@ -84,7 +86,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "O", ""},
                 {"", "X", ""},
                 {"", "", ""}
@@ -93,7 +95,7 @@ class TicTacToeTest {
 
         game.placePiece(2, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "O", ""},
                 {"", "X", ""},
                 {"X", "", ""}
@@ -102,7 +104,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 2);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "O", "O"},
                 {"", "X", ""},
                 {"X", "", ""}
@@ -111,7 +113,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "O"},
                 {"", "X", ""},
                 {"X", "", ""}
@@ -120,7 +122,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "O"},
                 {"O", "X", ""},
                 {"X", "", ""}
@@ -129,7 +131,7 @@ class TicTacToeTest {
 
         game.placePiece(2, 2);
         assert game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "O"},
                 {"O", "X", ""},
                 {"X", "", "X"}
@@ -146,7 +148,7 @@ class TicTacToeTest {
 
         TicTacToe game = newGame(players);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"", "", ""},
                 {"", "", ""}
@@ -155,7 +157,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"X", "", ""},
                 {"", "", ""}
@@ -164,7 +166,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"X", "O", ""},
                 {"", "", ""}
@@ -173,7 +175,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "", ""},
                 {"X", "O", ""},
                 {"", "", ""}
@@ -182,7 +184,7 @@ class TicTacToeTest {
 
         game.placePiece(2, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "", ""},
                 {"X", "O", ""},
                 {"O", "", ""}
@@ -191,7 +193,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 2);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "", "X"},
                 {"X", "O", ""},
                 {"O", "", ""}
@@ -200,7 +202,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "X"},
                 {"X", "O", ""},
                 {"O", "", ""}
@@ -209,7 +211,7 @@ class TicTacToeTest {
 
         game.placePiece(2, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "X"},
                 {"X", "O", ""},
                 {"O", "X", ""}
@@ -218,19 +220,19 @@ class TicTacToeTest {
 
         game.placePiece(1, 2);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "X"},
-                {"X", "O", "X"},
+                {"X", "O", "O"},
                 {"O", "X", ""}
         });
         assertThrows(IllegalStateException.class, game::getWinner);
 
         game.placePiece(2, 2);
         assert game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "O", "X"},
-                {"X", "O", "X"},
-                {"O", "X", "O"}
+                {"X", "O", "O"},
+                {"O", "X", "X"}
         });
         assert game.getWinner() == null;
     }
@@ -244,7 +246,7 @@ class TicTacToeTest {
 
         TicTacToe game = newGame(players);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"", "", ""},
                 {"", "", ""},
                 {"", "", ""}
@@ -253,7 +255,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "", ""},
                 {"", "", ""},
                 {"", "", ""}
@@ -262,7 +264,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "", ""},
                 {"", "O", ""},
                 {"", "", ""}
@@ -271,7 +273,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 1);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "X", ""},
                 {"", "O", ""},
                 {"", "", ""}
@@ -280,7 +282,7 @@ class TicTacToeTest {
 
         game.placePiece(0, 2);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "X", "O"},
                 {"", "O", ""},
                 {"", "", ""}
@@ -289,7 +291,7 @@ class TicTacToeTest {
 
         game.placePiece(1, 0);
         assert !game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "X", "O"},
                 {"X", "O", ""},
                 {"", "", ""}
@@ -298,7 +300,7 @@ class TicTacToeTest {
 
         game.placePiece(2, 0);
         assert game.isGameOver();
-        assert boardEquals(game, new String[][]{
+        assertBoardEquals(game, new String[][]{
                 {"X", "X", "O"},
                 {"X", "O", ""},
                 {"O", "", ""}
@@ -306,9 +308,9 @@ class TicTacToeTest {
         assert game.getWinner() == players[1];
     }
 
-    public static void main(String[] args) {
-        new TicTacToeTest().should_play_an_interactive_game_with_two_humans();
-    }
+//    public static void main(String[] args) {
+//        new TicTacToeTest().should_play_an_interactive_game_with_two_humans();
+//    }
 
     void should_play_an_interactive_game_with_two_humans() {
         Player[] players = new Player[] {
@@ -337,15 +339,31 @@ class TicTacToeTest {
         }
     }
 
-    private static boolean boardEquals(TicTacToe game, String[][] arr) {
-        return Objects.equals(game.getPiece(0, 0), arr[0][0])
-                && Objects.equals(game.getPiece(1, 0), arr[1][0])
-                && Objects.equals(game.getPiece(2, 0), arr[2][0])
-                && Objects.equals(game.getPiece(0, 1), arr[0][1])
-                && Objects.equals(game.getPiece(1, 1), arr[1][1])
-                && Objects.equals(game.getPiece(2, 1), arr[2][1])
-                && Objects.equals(game.getPiece(0, 2), arr[0][2])
-                && Objects.equals(game.getPiece(1, 2), arr[1][2])
-                && Objects.equals(game.getPiece(2, 2), arr[2][2]);
+    private void assertBoardEquals(TicTacToe game, String[][] expected) {
+        String[][] actual = new String[3][3];
+        actual[0][0] = game.getPiece(0, 0);
+        actual[0][1] = game.getPiece(0, 1);
+        actual[0][2] = game.getPiece(0, 2);
+        actual[1][0] = game.getPiece(1, 0);
+        actual[1][1] = game.getPiece(1, 1);
+        actual[1][2] = game.getPiece(1, 2);
+        actual[2][0] = game.getPiece(2, 0);
+        actual[2][1] = game.getPiece(2, 1);
+        actual[2][2] = game.getPiece(2, 2);
+
+        try {
+            assertArrayEquals(actual, expected);
+        }
+        catch (AssertionError err) {
+            System.err.println("Expected:");
+            System.err.println(Arrays.toString(expected[0]));
+            System.err.println(Arrays.toString(expected[1]));
+            System.err.println(Arrays.toString(expected[2]));
+            System.err.println("Actual:");
+            System.err.println(Arrays.toString(actual[0]));
+            System.err.println(Arrays.toString(actual[1]));
+            System.err.println(Arrays.toString(actual[2]));
+            throw err;
+        }
     }
 }
